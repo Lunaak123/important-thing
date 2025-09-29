@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Wishes for Your Friend</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body.birthday-mode {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-page {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .wishes-page {
+            display: none;
+            text-align: center;
+            position: relative;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            font-family: Arial, sans-serif;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            background: white;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .submit-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+
+        .birthday-message {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 25px;
+            margin: 20px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 3px solid #ff6b9d;
+        }
+
+        .birthday-title {
+            font-size: 3rem;
+            color: #ff1744;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .birthday-text {
+            font-size: 1.4rem;
+            color: #d81b60;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .age-highlight {
+            font-size: 2rem;
+            color: #ff1744;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Floating Candy Animation */
+        .candy {
+            position: absolute;
+            font-size: 2rem;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .candy:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .candy:nth-child(2) { left: 20%; animation-delay: 1s; }
+        .candy:nth-child(3) { left: 30%; animation-delay: 2s; }
+        .candy:nth-child(4) { left: 40%; animation-delay: 3s; }
+        .candy:nth-child(5) { left: 50%; animation-delay: 4s; }
+        .candy:nth-child(6) { left: 60%; animation-delay: 5s; }
+        .candy:nth-child(7) { left: 70%; animation-delay: 0.5s; }
+        .candy:nth-child(8) { left: 80%; animation-delay: 1.5s; }
+        .candy:nth-child(9) { left: 90%; animation-delay: 2.5s; }
+
+        /* Floating Flowers Animation */
+        .flower {
+            position: fixed;
+            font-size: 2.5rem;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .falling-flower {
+            animation: flowerFall linear infinite;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b9d;
+            animation: confettiFall 3s linear infinite;
+        }
+
+        .confetti:nth-child(odd) { background: #ff1744; }
+        .confetti:nth-child(3n) { background: #ffc107; }
+        .confetti:nth-child(4n) { background: #4caf50; }
+        .confetti:nth-child(5n) { background: #2196f3; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(-40px) rotate(-5deg); }
+            75% { transform: translateY(-20px) rotate(3deg); }
+        }
+
+        @keyframes flowerFall {
+            0% { 
+                transform: translateY(-100px) rotate(0deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(100vh) rotate(360deg); 
+                opacity: 0.7; 
+            }
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .form-page, .birthday-message { padding: 25px; margin: 10px; }
+            h1 { font-size: 2rem; }
+            .birthday-title { font-size: 2.2rem; }
+            .birthday-text { font-size: 1.2rem; }
+            .candy, .flower { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .form-page, .birthday-message { padding: 20px; }
+            h1 { font-size: 1.8rem; }
+            .birthday-title { font-size: 2rem; }
+            .birthday-text { font-size: 1.1rem; }
+            input { padding: 12px; }
+            .submit-btn { padding: 15px 30px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Form Page -->
+        <div id="formPage" class="form-page">
+            <h1>Friend Information</h1>
+            <form id="birthdayForm">
+                <div class="input-group">
+                    <label for="friendName">Name:</label>
+                    <input type="text" id="friendName" name="friendName" required placeholder="Enter name">
+                </div>
+                <div class="input-group">
+                    <label for="friendAge">Age:</label>
+                    <input type="number" id="friendAge" name="friendAge" required placeholder="Enter age" min="1" max="150">
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+
+        <!-- Wishes Page -->
+        <div id="wishesPage" class="wishes-page">
+            <!-- Floating Candy -->
+            <div class="candy">🍭</div>
+            <div class="candy">🍬</div>
+            <div class="candy">🧁</div>
+            <div class="candy">🍰</div>
+            <div class="candy">🎂</div>
+            <div class="candy">🍪</div>
+            <div class="candy">🍩</div>
+            <div class="candy">🍫</div>
+            <div class="candy">🍯</div>
+
+            <!-- Flowers will be generated by JavaScript -->
+
+            <div class="birthday-message">
+                <div class="birthday-title">🎊 Happy Birthday! 🎊</div>
+                <div id="personalMessage" class="birthday-text"></div>
+                <div class="age-highlight" id="ageMessage"></div>
+                <div class="birthday-text">
+                    May your special day be filled with happiness, laughter, and all your favorite things! 
+                    Here's to another year of amazing adventures, sweet memories, and dreams coming true! 🌟
+                </div>
+                <div style="font-size: 2rem; margin-top: 20px;">
+                    🎈🎁🎉🎂🎊🌟✨🎵
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create confetti effect
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        // Create continuous flower shower
+        function createFlowerShower() {
+            const flowers = ['🌸', '🌺', '🌻', '🌷', '🌹', '💐', '🌼', '🏵️', '🌿', '🍀', '🌱', '🌾', '🌵', '🌴', '🍃', '🌲', '🌳', '🌿', '🌺', '🌸'];
+            
+            function dropFlower() {
+                const flower = document.createElement('div');
+                flower.className = 'flower falling-flower';
+                flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+                flower.style.left = Math.random() * 100 + '%';
+                flower.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                flower.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+                flower.style.opacity = Math.random() * 0.5 + 0.5;
+                document.body.appendChild(flower);
+                
+                // Remove flower after animation
+                setTimeout(() => {
+                    if (flower.parentNode) {
+                        flower.remove();
+                    }
+                }, 8000);
+            }
+            
+            // Create multiple flower intervals for heavy shower
+            const intervals = [];
+            
+            // Main flower shower - every 150ms
+            intervals.push(setInterval(dropFlower, 150));
+            
+            // Secondary flower shower - every 200ms
+            intervals.push(setInterval(dropFlower, 200));
+            
+            // Tertiary flower shower - every 250ms
+            intervals.push(setInterval(dropFlower, 250));
+            
+            // Burst showers every 3 seconds
+            intervals.push(setInterval(() => {
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(dropFlower, i * 50);
+                }
+            }, 3000));
+            
+            return intervals;
+        }
+
+        let flowerIntervals = [];
+
+        // Handle form submission
+        document.getElementById('birthdayForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('friendName').value.trim();
+            const age = document.getElementById('friendAge').value;
+            
+            if (name && age) {
+                // Hide form page
+                document.getElementById('formPage').style.display = 'none';
+                
+                // Switch to birthday mode
+                document.body.classList.add('birthday-mode');
+                
+                // Show wishes page
+                document.getElementById('wishesPage').style.display = 'block';
+                
+                // Create personalized messages
+                const personalMessage = document.getElementById('personalMessage');
+                const ageMessage = document.getElementById('ageMessage');
+                
+                const creativeBirthayWishes = [
+                    `Dear ${name}, today is all about celebrating the amazing person you are! 🌟`,
+                    `${name}, another year around the sun means another year of being absolutely fantastic! ☀️`,
+                    `Happy Birthday ${name}! May your day be as sweet as cake and as bright as candles! 🕯️`,
+                    `${name}, you bring so much joy and happiness to everyone around you! 💖`,
+                    `Wishing the most incredible ${name} the most incredible birthday ever! 🎆`,
+                    `${name}, may this special day bring you endless smiles and wonderful memories! 😊`,
+                    `Happy Birthday to someone who makes the world a brighter place, ${name}! ✨`,
+                    `${name}, here's to celebrating you and all the happiness you deserve! 🎉`
+                ];
+                
+                const randomWish = creativeBirthayWishes[Math.floor(Math.random() * creativeBirthayWishes.length)];
+                personalMessage.textContent = randomWish;
+                
+                ageMessage.textContent = `🎂 Celebrating ${age} amazing years! 🎂`;
+                
+                // Create confetti shower
+                createConfetti();
+                
+                // Start continuous heavy flower shower
+                flowerIntervals = createFlowerShower();
+                
+                // Create more confetti every 2 seconds
+                const confettiInterval = setInterval(createConfetti, 2000);
+                
+                // Stop confetti after 10 seconds
+                setTimeout(() => {
+                    clearInterval(confettiInterval);
+                }, 10000);
+            }
+        });
+
+        // Add some interactive sparkle effects
+        document.addEventListener('click', function(e) {
+            if (document.getElementById('wishesPage').style.display === 'block') {
+                const sparkle = document.createElement('div');
+                sparkle.innerHTML = '✨';
+                sparkle.style.position = 'absolute';
+                sparkle.style.left = e.clientX + 'px';
+                sparkle.style.top = e.clientY + 'px';
+                sparkle.style.fontSize = '2rem';
+                sparkle.style.pointerEvents = 'none';
+                sparkle.style.animation = 'float 2s ease-out forwards';
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 2000);
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9869f525c49f8730',t:'MTc1OTEzMjkzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
